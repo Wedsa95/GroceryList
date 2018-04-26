@@ -1,0 +1,7 @@
+entity GroceryList {
+	listName Integer,
+    itemName String
+}
+relationship ManyToOne {
+	GroceryList{listOwner} to User
+}

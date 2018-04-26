@@ -1,0 +1,27 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "listOwner",
+            "otherEntityName": "user",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "listName",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "itemName",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20180426070318",
+    "entityTableName": "grocery_list",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false
+}

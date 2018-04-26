@@ -1,0 +1,79 @@
+<div class="container">
+<div class="row">
+	<div class="col-6">
+		<input type="text" class="" placeholder="what more?" />
+	</div>
+	<div class="col-6">
+		<input type="button" class="" value="Add.." />
+	</div>
+	<div>
+		<ul *ngFor="let groceryList of groceryLists ;trackBy: trackId" >
+			<li class="" (click)="clickListItem()">user={{groceryList.listOwner?.id}} {{groceryList.itemName}}</li>
+		</ul>
+</div>
+</div>
+ 
+    <h2>
+        <span>Grocery List</span>
+        <button class="btn btn-primary float-right jh-create-entity create-grocery-list" [routerLink]="['/', { outlets: { popup: ['grocery-list-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span >
+            Create new Grocery List
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="groceryLists">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span>ID</span></th>
+            <th><span>List Name</span></th>
+            <th><span>Item Name</span></th>
+            <th><span>List Owner</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let groceryList of groceryLists ;trackBy: trackId">
+                <td><a [routerLink]="['../grocery-list', groceryList.id ]">{{groceryList.id}}</a></td>
+                <td>{{groceryList.listName}}</td>
+                <td>{{groceryList.itemName}}</td>
+                <td>
+                    {{groceryList.listOwner?.id}}
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../grocery-list', groceryList.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'grocery-list/'+ groceryList.id + '/edit'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'grocery-list/'+ groceryList.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    -->
+</div>
