@@ -11,43 +11,41 @@ export type EntityResponseType = HttpResponse<GroceryList>;
 @Injectable()
 export class GroceryListService {
 
-    private resourceUrl =  SERVER_API_URL + 'api/grocery-lists';
+    private allUrl =  SERVER_API_URL + 'api/grocery-lists';
+    private byUserUrl =  SERVER_API_URL + 'api/grocery-lists/owner';
 
     constructor(private http: HttpClient) { }
 
     create(groceryList: GroceryList): Observable<EntityResponseType> {
         const copy = this.convert(groceryList);
-        return this.http.post<GroceryList>(this.resourceUrl, copy, { observe: 'response' })
+        return this.http.post<GroceryList>(this.allUrl, copy, { observe: 'response' })
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
     update(groceryList: GroceryList): Observable<EntityResponseType> {
         const copy = this.convert(groceryList);
-        return this.http.put<GroceryList>(this.resourceUrl, copy, { observe: 'response' })
+        return this.http.put<GroceryList>(this.allUrl, copy, { observe: 'response' })
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
-    findAll(req?: any): Observable<HttpResponse<GroceryList[]>> {
-      const options = createRequestOption(req);
-      //const httpParams = new HttpParams().set('listOwner', id);
-
-        return this.http.get<GroceryList[]>(this.resourceUrl, { params: 'options', observe: 'response' })
+    findAll(id: number): Observable<HttpResponse<GroceryList[]>> {
+        return this.http.get<GroceryList[]>(`${this.byUserUrl}/${id}`, { observe: 'response' })
             .map((res: HttpResponse<GroceryList[]>) => this.convertArrayResponse(res));
     }
 
     find(id: number): Observable<EntityResponseType> {
-        return this.http.get<GroceryList>(`${this.resourceUrl}/${id}`, { observe: 'response'})
+        return this.http.get<GroceryList>(`${this.allUrl}/${id}`, { observe: 'response'})
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
     query(req?: any): Observable<HttpResponse<GroceryList[]>> {
         const options = createRequestOption(req);
-        return this.http.get<GroceryList[]>(this.resourceUrl, { params: options, observe: 'response' })
+        return this.http.get<GroceryList[]>(this.allUrl, { params: options, observe: 'response' })
             .map((res: HttpResponse<GroceryList[]>) => this.convertArrayResponse(res));
     }
 
     delete(id: number): Observable<HttpResponse<any>> {
-        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
+        return this.http.delete<any>(`${this.allUrl}/${id}`, { observe: 'response'});
     }
 
     private convertResponse(res: EntityResponseType): EntityResponseType {

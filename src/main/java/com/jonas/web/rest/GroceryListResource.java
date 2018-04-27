@@ -102,7 +102,19 @@ public class GroceryListResource {
         GroceryList groceryList = groceryListRepository.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(groceryList));
     }
-
+    /**
+     * GET  /grocery-lists/:id : get the "id" groceryList.
+     *
+     * @param id the id of the groceryList to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the groceryList, or with status 404 (Not Found)
+     */
+    @GetMapping("/grocery-lists/owner/{id}")
+    @Timed
+    public ResponseEntity<List<GroceryList>> getGroceryListByOwner(@PathVariable Long id) {
+        log.debug("REST request to get GroceryList by Owner : {}", id);
+        List<GroceryList> groceryList = groceryListRepository.findAllGroceryListByListOwnerId(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(groceryList));
+    }
     /**
      * DELETE  /grocery-lists/:id : delete the "id" groceryList.
      *

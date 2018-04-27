@@ -16,6 +16,5 @@ public interface GroceryListRepository extends JpaRepository<GroceryList, Long> 
     @Query("select grocery_list from GroceryList grocery_list where grocery_list.listOwner.login = ?#{principal.username}")
     List<GroceryList> findByListOwnerIsCurrentUser();
     
-    List<GroceryList> findGroceryListByListOwner();
-
+    List<GroceryList> findAllGroceryListByListOwnerId(Long id);
 }

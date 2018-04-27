@@ -5,7 +5,7 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
 import { GroceryList } from './grocery-list.model';
 import { GroceryListService } from './grocery-list.service';
-import { Principal } from '../../shared';
+import { Principal, AccountService } from '../../shared';
 
 @Component({
     selector: 'jhi-grocery-list',
@@ -13,9 +13,11 @@ import { Principal } from '../../shared';
 })
 export class GroceryListComponent implements OnInit, OnDestroy {
     groceryLists: GroceryList[];
-    currentAccount: any;
+    currentAccount: any = null;
     eventSubscriber: Subscription;
 
+    currentShowingList: number;
+    currentAcc = 0;
     constructor(
         private groceryListService: GroceryListService,
         private jhiAlertService: JhiAlertService,
@@ -25,7 +27,7 @@ export class GroceryListComponent implements OnInit, OnDestroy {
     }
 
     loadAll() {
-        this.groceryListService.query().subscribe(
+      this.groceryListService.findAll(this.currentAcc).subscribe(
             (res: HttpResponse<GroceryList[]>) => {
                 this.groceryLists = res.body;
             },
@@ -36,9 +38,10 @@ export class GroceryListComponent implements OnInit, OnDestroy {
         this.loadAll();
         this.principal.identity().then((account) => {
             this.currentAccount = account;
+            this.currentAcc = this.currentAccount.id;
         });
         this.registerChangeInGroceryLists();
-        console.log(this.currentAccount.login);
+        
     }
 
     ngOnDestroy() {
@@ -57,5 +60,9 @@ export class GroceryListComponent implements OnInit, OnDestroy {
     }
     private clickListItem() {
       console.log('clickListItem');
+    }
+    private clickAddButton() {
+      console.log('clickListItem');
+       this.loadAll();
     }
 }

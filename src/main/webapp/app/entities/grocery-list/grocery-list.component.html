@@ -4,7 +4,7 @@
 		<input type="text" class="" placeholder="what more?" />
 	</div>
 	<div class="col-6">
-		<input type="button" class="" value="Add.." />
+		<input type="button" (click)="clickAddButton()" class="" value="Add.." />
 	</div>
 	<div>
 		<ul *ngFor="let groceryList of groceryLists ;trackBy: trackId" >
@@ -12,7 +12,7 @@
 		</ul>
 </div>
 </div>
- 
+ <!--
     <h2>
         <span>Grocery List</span>
         <button class="btn btn-primary float-right jh-create-entity create-grocery-list" [routerLink]="['/', { outlets: { popup: ['grocery-list-new'] } }]">
