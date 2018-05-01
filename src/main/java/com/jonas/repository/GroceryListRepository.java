@@ -17,4 +17,5 @@ public interface GroceryListRepository extends JpaRepository<GroceryList, Long> 
     List<GroceryList> findByListOwnerIsCurrentUser();
     
     List<GroceryList> findAllGroceryListByListOwnerId(Long id);
+
 }

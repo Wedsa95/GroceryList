@@ -13,10 +13,11 @@ import { Principal, AccountService } from '../../shared';
 })
 export class GroceryListComponent implements OnInit, OnDestroy {
     groceryLists: GroceryList[];
+    filterdgroceryLists: GroceryList[];
     currentAccount: any = null;
     eventSubscriber: Subscription;
 
-    currentShowingList: number;
+    currentShowingList = 1;
     currentAcc = 0;
     constructor(
         private groceryListService: GroceryListService,
@@ -33,36 +34,49 @@ export class GroceryListComponent implements OnInit, OnDestroy {
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
+      this.filtrateGroceryList();
     }
     ngOnInit() {
-        this.loadAll();
+        
         this.principal.identity().then((account) => {
             this.currentAccount = account;
             this.currentAcc = this.currentAccount.id;
         });
         this.registerChangeInGroceryLists();
+        this.loadAll();
         
     }
-
     ngOnDestroy() {
         this.eventManager.destroy(this.eventSubscriber);
     }
-
     trackId(index: number, item: GroceryList) {
         return item.id;
     }
     registerChangeInGroceryLists() {
         this.eventSubscriber = this.eventManager.subscribe('groceryListListModification', (response) => this.loadAll());
     }
-
     private onError(error) {
         this.jhiAlertService.error(error.message, null, null);
     }
-    private clickListItem() {
-      console.log('clickListItem');
+    
+    
+    
+    private filtrateGroceryList(){
+         return this.filterdgroceryLists = this.groceryLists.filter(x => x.listName == this.currentShowingList);
     }
-    private clickAddButton() {
+    private clickTabs(chosenList){
+        this.currentShowingList = chosenList;
+        console.log('click Chosen List' + this.currentShowingList);
+    }
+    private clickListItem(event) {
+      console.log('clickListItem ' + event);
+    }
+    private dblClickListItem(event) {
+        console.log('doubleClickListItem ' + event);
+    }
+    private addItem() {
       console.log('clickListItem');
+      this.groceryListService.create(new GroceryList(this.currentShowingList,));
        this.loadAll();
     }
 }

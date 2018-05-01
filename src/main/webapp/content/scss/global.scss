@@ -218,3 +218,38 @@ ui bootstrap tweaks
  }
 
 /* jhipster-needle-scss-add-main JHipster will add new css style */
+
+/* ==========================================================================
+custom classes
+========================================================================== */
+.tab-green{
+    height: 2.5em;
+    width: 3em;
+    background-color: #6DA34D;
+}
+.tab-purpel{
+    height: 2.5em;
+    width: 3em;
+    background-color: #321325;
+}
+.tab-yellow{
+    height: 2.5em;
+    width: 3em;
+    background-color: #CCA43B;
+}
+.tab-blue{
+    height: 2.5em;
+    width: 3em;
+    background-color: #424874;
+}
+.tab-red{
+    height: 2.5em;
+    width: 3em;
+    background-color: #FF220C;
+}
+.nav-tabs{
+    .nav-link{
+        border-radius: 45% 45% 0 0;
+
+    }
+}

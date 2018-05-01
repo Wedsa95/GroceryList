@@ -1,18 +1,34 @@
 <div class="container">
 <div class="row">
-	<div class="col-6">
-		<input type="text" class="" placeholder="what more?" />
-	</div>
-	<div class="col-6">
-		<input type="button" (click)="clickAddButton()" class="" value="Add.." />
-	</div>
+	<ul class="nav nav-tabs">
+	  <li class="nav-item ">
+	    <a (click)="clickTabs(1)" class="nav-link tab-green"></a>
+	  </li>
+	  <li class="nav-item">
+	    <a (click)="clickTabs(2)" class="nav-link tab-purpel"></a>
+	  </li>
+	  <li class="nav-item">
+	    <a (click)="clickTabs(3)" class="nav-link tab-yellow"></a>
+	  </li>
+	  <li class="nav-item">
+	    <a (click)="clickTabs(4)" class="nav-link tab-blue"></a>
+	  </li>
+	  <li class="nav-item">
+	    <a (click)="clickTabs(5)" class="nav-link tab-red"></a>
+	  </li>
+	</ul>
+</div>
+<div class="row">
+	<input type="text" class="" (keyup)="addItem()" placeholder="what more?" />
+</div>
+<div class="row">
 	<div>
-		<ul *ngFor="let groceryList of groceryLists ;trackBy: trackId" >
-			<li class="" (click)="clickListItem()">user={{groceryList.listOwner?.id}} {{groceryList.itemName}}</li>
+		<ul *ngFor="let groceries of filtrateGroceryList()" >
+			<li class="" (click)="clickListItem($event)" (dblclick)="dblClickListItem($event)">user={{groceries.listOwner?.id}} {{groceries.itemName}}</li>
 		</ul>
 </div>
 </div>
- <!--
+<!--  
     <h2>
         <span>Grocery List</span>
         <button class="btn btn-primary float-right jh-create-entity create-grocery-list" [routerLink]="['/', { outlets: { popup: ['grocery-list-new'] } }]">
