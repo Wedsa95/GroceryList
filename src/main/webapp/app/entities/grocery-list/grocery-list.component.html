@@ -19,15 +19,16 @@
 	</ul>
 </div>
 <div class="row">
-	<input type="text" class="" (keyup)="addItem()" placeholder="what more?" />
+	<input type="text" class="" (keyup.enter)="addItem()" [(ngModel)]="itemName" placeholder="what more?" />
 </div>
 <div class="row">
 	<div>
 		<ul *ngFor="let groceries of filtrateGroceryList()" >
-			<li class="" (click)="clickListItem($event)" (dblclick)="dblClickListItem($event)">user={{groceries.listOwner?.id}} {{groceries.itemName}}</li>
+			<li class="not-over-drawn" (click)="clickListItem($event)" (dblclick)="dblClickListItem($event)">user={{groceries.listOwner?.id}} {{groceries.itemName}}</li>
 		</ul>
 </div>
 </div>
+
 <!--  
     <h2>
         <span>Grocery List</span>
