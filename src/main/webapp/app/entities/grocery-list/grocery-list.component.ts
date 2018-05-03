@@ -39,7 +39,7 @@ export class GroceryListComponent implements OnInit, AfterViewInit , OnDestroy {
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
-      this.filtrateGroceryList();
+
     }
     ngAfterViewInit() {
        this.loadAll();
@@ -73,22 +73,24 @@ export class GroceryListComponent implements OnInit, AfterViewInit , OnDestroy {
     }
     private clickListItem(event) {
       console.log('clickListItem ' + event);
+      
       if (event.target.className !== 'over-drawn') {
         event.target.setAttribute('class', 'over-drawn');
       } else {
-        event.target.setAttribute('class', 'over-drawn');
+        event.target.setAttribute('class', 'not-over-drawn');
       }
     }
-    private dblClickListItem(event) {
-        console.log('doubleClickListItem ' + event);
+    private dblClickListItem(item) {
+        this.deleteItem(item.id);
     }
 
-    private addItem() {
+    private addItem(event) {
       console.log('addListItem');
       this.subscribeToSaveResponse(
           this.groceryListService.
           create(new GroceryList(null, this.currentShowingList, this.itemName, this.currentAccount)));
       this.loadAll();
+      this.itemName = '';
     }
     private subscribeToSaveResponse(result: Observable<HttpResponse<GroceryList>>) {
         result.subscribe((res: HttpResponse<GroceryList>) =>
@@ -100,5 +102,14 @@ export class GroceryListComponent implements OnInit, AfterViewInit , OnDestroy {
     }
     private onSaveError() {
         this.isSaving = false;
+    }
+    
+    deleteItem(id: number) {
+        this.groceryListService.delete(id).subscribe((response) => {
+            this.eventManager.broadcast({
+                name: 'groceryListListModification',
+                content: 'Deleted an groceryList'
+            });
+        });
     }
 }
