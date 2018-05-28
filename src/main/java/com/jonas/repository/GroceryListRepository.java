@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Spring Data JPA repository for the GroceryList entity.
  */
-@SuppressWarnings("unused")
+
 @Repository
 public interface GroceryListRepository extends JpaRepository<GroceryList, Long> {
 
@@ -17,5 +17,5 @@ public interface GroceryListRepository extends JpaRepository<GroceryList, Long> 
     List<GroceryList> findByListOwnerIsCurrentUser();
     
     List<GroceryList> findAllGroceryListByListOwnerId(Long id);
-
+    
 }

@@ -6,6 +6,7 @@ export class GroceryList implements BaseEntity {
         public listName?: number,
         public itemName?: string,
         public listOwner?: User,
+                
     ) {
     }
 }

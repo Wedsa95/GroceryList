@@ -5,20 +5,12 @@ import { GroceryListAppSharedModule } from '../../shared';
 import { GroceryListAppAdminModule } from '../../admin/admin.module';
 import {
     GroceryListService,
-    GroceryListPopupService,
     GroceryListComponent,
-    GroceryListDetailComponent,
-    GroceryListDialogComponent,
-    GroceryListPopupComponent,
-    GroceryListDeletePopupComponent,
-    GroceryListDeleteDialogComponent,
-    groceryListRoute,
-    groceryListPopupRoute,
+    groceryListRoute
 } from './';
 
 const ENTITY_STATES = [
-    ...groceryListRoute,
-    ...groceryListPopupRoute,
+    ...groceryListRoute
 ];
 
 @NgModule({
@@ -28,23 +20,13 @@ const ENTITY_STATES = [
         RouterModule.forChild(ENTITY_STATES)
     ],
     declarations: [
-        GroceryListComponent,
-        GroceryListDetailComponent,
-        GroceryListDialogComponent,
-        GroceryListDeleteDialogComponent,
-        GroceryListPopupComponent,
-        GroceryListDeletePopupComponent,
+        GroceryListComponent
     ],
     entryComponents: [
-        GroceryListComponent,
-        GroceryListDialogComponent,
-        GroceryListPopupComponent,
-        GroceryListDeleteDialogComponent,
-        GroceryListDeletePopupComponent,
+        GroceryListComponent
     ],
     providers: [
-        GroceryListService,
-        GroceryListPopupService,
+        GroceryListService
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

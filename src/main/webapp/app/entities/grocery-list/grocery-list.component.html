@@ -1,95 +1,35 @@
 <div class="container">
 <div class="row">
-	<ul class="nav nav-tabs">
-	  <li class="nav-item ">
+	<ul class="nav nav-tabs tab-menu">
+	  <li class="nav-item tab-item">
 	    <a (click)="clickTabs(1)" class="nav-link tab-green"></a>
 	  </li>
-	  <li class="nav-item">
+	  <li class="nav-item tab-item">
 	    <a (click)="clickTabs(2)" class="nav-link tab-purpel"></a>
 	  </li>
-	  <li class="nav-item">
+	  <li class="nav-item tab-item">
 	    <a (click)="clickTabs(3)" class="nav-link tab-yellow"></a>
 	  </li>
-	  <li class="nav-item">
+	  <li class="nav-item tab-item">
 	    <a (click)="clickTabs(4)" class="nav-link tab-blue"></a>
 	  </li>
-	  <li class="nav-item">
+	  <li class="nav-item tab-item">
 	    <a (click)="clickTabs(5)" class="nav-link tab-red"></a>
 	  </li>
 	</ul>
 </div>
 <div class="row">
-	<input type="text" class="" (keyup.enter)="addItem($event)" [(ngModel)]="itemName" placeholder="what more?" />
+	<input type="text" class="input-grocerys" 
+	(keyup.enter)="addItem($event)" [(ngModel)]="itemName" 
+	placeholder="what more?" />
 </div>
 <div class="row">
 	<div>
-		<ul *ngFor="let groceries of filtrateGroceryList()" style="list-style-type:none;">
-			<li class="not-over-drawn" (click)="clickListItem($event)" (dblclick)="dblClickListItem(groceries)">{{groceries.itemName}}</li>
+		<ul *ngFor="let groceries of filtrateGroceryList()" class="list-style">
+			<li class="not-over-drawn " 
+			(click)="clickListItem($event)" (dblclick)="dblClickListItem(groceries)">
+			{{groceries.itemName}}</li>
 		</ul>
+	</div>
 </div>
-</div>
-<!--  
-    <h2>
-        <span>Grocery List</span>
-        <button class="btn btn-primary float-right jh-create-entity create-grocery-list" [routerLink]="['/', { outlets: { popup: ['grocery-list-new'] } }]">
-            <span class="fa fa-plus"></span>
-            <span >
-            Create new Grocery List
-            </span>
-        </button>
-    </h2>
-    <jhi-alert></jhi-alert>
-    <div class="row">
-    </div>
-    <br/>
-    <div class="table-responsive" *ngIf="groceryLists">
-        <table class="table table-striped">
-            <thead>
-            <tr>
-            <th><span>ID</span></th>
-            <th><span>List Name</span></th>
-            <th><span>Item Name</span></th>
-            <th><span>List Owner</span></th>
-            <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let groceryList of groceryLists ;trackBy: trackId">
-                <td><a [routerLink]="['../grocery-list', groceryList.id ]">{{groceryList.id}}</a></td>
-                <td>{{groceryList.listName}}</td>
-                <td>{{groceryList.itemName}}</td>
-                <td>
-                    {{groceryList.listOwner?.id}}
-                </td>
-                <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
-                        <button type="submit"
-                                [routerLink]="['../grocery-list', groceryList.id ]"
-                                class="btn btn-info btn-sm">
-                            <span class="fa fa-eye"></span>
-                            <span class="d-none d-md-inline">View</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'grocery-list/'+ groceryList.id + '/edit'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
-                                class="btn btn-primary btn-sm">
-                            <span class="fa fa-pencil"></span>
-                            <span class="d-none d-md-inline">Edit</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'grocery-list/'+ groceryList.id + '/delete'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
-                                class="btn btn-danger btn-sm">
-                            <span class="fa fa-remove"></span>
-                            <span class="d-none d-md-inline">Delete</span>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    -->
 </div>

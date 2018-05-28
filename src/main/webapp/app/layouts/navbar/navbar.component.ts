@@ -20,7 +20,7 @@ export class NavbarComponent implements OnInit {
     languages: any[];
     swaggerEnabled: boolean;
     modalRef: NgbModalRef;
-    version: string;
+    account: Account;
 
     constructor(
         private loginService: LoginService,
@@ -29,11 +29,14 @@ export class NavbarComponent implements OnInit {
         private profileService: ProfileService,
         private router: Router
     ) {
-        this.version = VERSION ? 'v' + VERSION : '';
         this.isNavbarCollapsed = true;
     }
 
     ngOnInit() {
+        this.account = null;
+        this.principal.identity().then((account) => {
+            this.account = account;
+        });
         this.profileService.getProfileInfo().then((profileInfo) => {
             this.inProduction = profileInfo.inProduction;
             this.swaggerEnabled = profileInfo.swaggerEnabled;

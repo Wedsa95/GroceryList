@@ -13,7 +13,7 @@ import { Observable } from 'rxjs/Observable';
     selector: 'jhi-grocery-list',
     templateUrl: './grocery-list.component.html'
 })
-export class GroceryListComponent implements OnInit, AfterViewInit , OnDestroy {
+export class GroceryListComponent implements OnInit, OnDestroy {
     groceryLists: GroceryList[];
     filterdgroceryLists: GroceryList[];
     currentAccount: any = null;
@@ -30,10 +30,12 @@ export class GroceryListComponent implements OnInit, AfterViewInit , OnDestroy {
         private eventManager: JhiEventManager,
         private principal: Principal
     ) {
+        
     }
 
     loadAll() {
-      this.groceryListService.findAll(this.currentAcc).subscribe(
+        console.log('load all');
+      this.groceryListService.findAll().subscribe(
             (res: HttpResponse<GroceryList[]>) => {
                 this.groceryLists = res.body;
             },
@@ -41,21 +43,16 @@ export class GroceryListComponent implements OnInit, AfterViewInit , OnDestroy {
         );
 
     }
-    ngAfterViewInit() {
-       this.loadAll();
-    }
     ngOnInit() {
-        this.principal.identity().then((account) => {
-            this.currentAccount = account;
-            this.currentAcc = this.currentAccount.id;
-        });
+        console.log('on init');
+//        this.principal.identity().then((account) => {
+//            this.currentAccount = account;
+//        });
+        this.loadAll();
         this.registerChangeInGroceryLists();
     }
     ngOnDestroy() {
         this.eventManager.destroy(this.eventSubscriber);
-    }
-    trackId(index: number, item: GroceryList) {
-        return item.id;
     }
     registerChangeInGroceryLists() {
         this.eventSubscriber = this.eventManager.subscribe('groceryListListModification', (response) => this.loadAll());
@@ -88,7 +85,7 @@ export class GroceryListComponent implements OnInit, AfterViewInit , OnDestroy {
       console.log('addListItem');
       this.subscribeToSaveResponse(
           this.groceryListService.
-          create(new GroceryList(null, this.currentShowingList, this.itemName, this.currentAccount)));
+          create(new GroceryList(null, this.currentShowingList, this.itemName)));
       this.loadAll();
       this.itemName = '';
     }

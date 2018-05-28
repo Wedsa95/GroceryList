@@ -2,8 +2,10 @@ package com.jonas.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.jonas.domain.GroceryList;
-
+import com.jonas.domain.User;
 import com.jonas.repository.GroceryListRepository;
+import com.jonas.repository.UserRepository;
+import com.jonas.security.SecurityUtils;
 import com.jonas.web.rest.errors.BadRequestAlertException;
 import com.jonas.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -30,9 +32,12 @@ public class GroceryListResource {
     private static final String ENTITY_NAME = "groceryList";
 
     private final GroceryListRepository groceryListRepository;
+    
+    private final UserRepository userRepository;
 
-    public GroceryListResource(GroceryListRepository groceryListRepository) {
+    public GroceryListResource(GroceryListRepository groceryListRepository, UserRepository userRepository) {
         this.groceryListRepository = groceryListRepository;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -49,6 +54,11 @@ public class GroceryListResource {
         if (groceryList.getId() != null) {
             throw new BadRequestAlertException("A new groceryList cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        Optional<User> user = userRepository.findOneWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin().get());
+        if(user.isPresent()) {
+        	User users = user.get();
+        	groceryList.setListOwner(users);
+        }
         GroceryList result = groceryListRepository.save(groceryList);
         return ResponseEntity.created(new URI("/api/grocery-lists/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
@@ -56,63 +66,16 @@ public class GroceryListResource {
     }
 
     /**
-     * PUT  /grocery-lists : Updates an existing groceryList.
+     * GET  /grocery-lists/:id : get the "id" groceryList.
      *
-     * @param groceryList the groceryList to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated groceryList,
-     * or with status 400 (Bad Request) if the groceryList is not valid,
-     * or with status 500 (Internal Server Error) if the groceryList couldn't be updated
-     * @throws URISyntaxException if the Location URI syntax is incorrect
-     */
-    @PutMapping("/grocery-lists")
-    @Timed
-    public ResponseEntity<GroceryList> updateGroceryList(@RequestBody GroceryList groceryList) throws URISyntaxException {
-        log.debug("REST request to update GroceryList : {}", groceryList);
-        if (groceryList.getId() == null) {
-            return createGroceryList(groceryList);
-        }
-        GroceryList result = groceryListRepository.save(groceryList);
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, groceryList.getId().toString()))
-            .body(result);
-    }
-
-    /**
-     * GET  /grocery-lists : get all the groceryLists.
-     *
-     * @return the ResponseEntity with status 200 (OK) and the list of groceryLists in body
+     * @param id the id of the groceryList to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the groceryList, or with status 404 (Not Found)
      */
     @GetMapping("/grocery-lists")
     @Timed
-    public List<GroceryList> getAllGroceryLists() {
-        log.debug("REST request to get all GroceryLists");
-        return groceryListRepository.findAll();
-        }
-
-    /**
-     * GET  /grocery-lists/:id : get the "id" groceryList.
-     *
-     * @param id the id of the groceryList to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the groceryList, or with status 404 (Not Found)
-     */
-    @GetMapping("/grocery-lists/{id}")
-    @Timed
-    public ResponseEntity<GroceryList> getGroceryList(@PathVariable Long id) {
-        log.debug("REST request to get GroceryList : {}", id);
-        GroceryList groceryList = groceryListRepository.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(groceryList));
-    }
-    /**
-     * GET  /grocery-lists/:id : get the "id" groceryList.
-     *
-     * @param id the id of the groceryList to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the groceryList, or with status 404 (Not Found)
-     */
-    @GetMapping("/grocery-lists/owner/{id}")
-    @Timed
-    public ResponseEntity<List<GroceryList>> getGroceryListByOwner(@PathVariable Long id) {
-        log.debug("REST request to get GroceryList by Owner : {}", id);
-        List<GroceryList> groceryList = groceryListRepository.findAllGroceryListByListOwnerId(id);
+    public ResponseEntity<List<GroceryList>> getGroceryListByOwner() {
+        log.debug("REST request to get GroceryList by The current Owner");
+        List<GroceryList> groceryList = groceryListRepository.findByListOwnerIsCurrentUser();
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(groceryList));
     }
     /**

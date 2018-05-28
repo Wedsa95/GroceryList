@@ -12,7 +12,6 @@ export type EntityResponseType = HttpResponse<GroceryList>;
 export class GroceryListService {
 
     private allUrl =  SERVER_API_URL + 'api/grocery-lists';
-    private byUserUrl =  SERVER_API_URL + 'api/grocery-lists/owner';
 
     constructor(private http: HttpClient) { }
 
@@ -22,14 +21,8 @@ export class GroceryListService {
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
-    update(groceryList: GroceryList): Observable<EntityResponseType> {
-        const copy = this.convert(groceryList);
-        return this.http.put<GroceryList>(this.allUrl, copy, { observe: 'response' })
-            .map((res: EntityResponseType) => this.convertResponse(res));
-    }
-
-    findAll(id: number): Observable<HttpResponse<GroceryList[]>> {
-        return this.http.get<GroceryList[]>(`${this.byUserUrl}/${id}`, { observe: 'response' })
+    findAll(): Observable<HttpResponse<GroceryList[]>> {
+        return this.http.get<GroceryList[]>( this.allUrl, { observe: 'response' })
             .map((res: HttpResponse<GroceryList[]>) => this.convertArrayResponse(res));
     }
 

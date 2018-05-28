@@ -4,6 +4,7 @@ import com.jonas.GroceryListApp;
 
 import com.jonas.domain.GroceryList;
 import com.jonas.repository.GroceryListRepository;
+import com.jonas.repository.UserRepository;
 import com.jonas.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -46,6 +47,9 @@ public class GroceryListResourceIntTest {
 
     @Autowired
     private GroceryListRepository groceryListRepository;
+    
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -62,11 +66,12 @@ public class GroceryListResourceIntTest {
     private MockMvc restGroceryListMockMvc;
 
     private GroceryList groceryList;
+    
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final GroceryListResource groceryListResource = new GroceryListResource(groceryListRepository);
+        final GroceryListResource groceryListResource = new GroceryListResource(groceryListRepository,userRepository);
         this.restGroceryListMockMvc = MockMvcBuilders.standaloneSetup(groceryListResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
